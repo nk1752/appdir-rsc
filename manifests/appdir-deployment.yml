@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: appdir-deployment
+  namespace: poc
+  labels:
+    app: appdir
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: appdir
+  template:
+    metadata:
+      labels:
+        app: appdir
+    spec:
+      
+      containers:
+      - name: appdir
+        image: vhacr2.azurecr.io/appdir:latest
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "500m"
+          limits:
+              memory: "256Mi"
+              cpu: "1000m"
+        ports:
+        - containerPort: 3000
+          
+          
