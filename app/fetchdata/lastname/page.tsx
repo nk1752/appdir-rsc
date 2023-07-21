@@ -14,6 +14,7 @@ export default function LastNamePage() {
   async function getUserByLastName(formData: FormData) {
     "use server";
     const lastname = formData.get("lastname") as String;
+    const urlinput = formData.get("urlinput") as String;
 
     const cookieStore = cookies();
 
@@ -25,29 +26,18 @@ export default function LastNamePage() {
     const currentUser = user?.value;
     //console.log('curretUser ====>', currentUser)
     
-    const url = "http://127.0.0.1:8080" + "/api/user?lastname=" + lastname;
+    const url = urlinput + "/api/user?lastname=" + lastname;
     
     console.log(">>> fetch url >>> ", url);
 
-    const res = await fetch(url, {
-      method: "GET",
-      mode: "cors",
-      cache: "no-store",
-      headers: {
-        "Content-Type": "application/json",
-        
-      },
-
-      //Authorization: "Bearer " + jwtToken,
-    });
+    // node-fetch with options
+    const res = await fetch(url);
 
     if (!res.ok) {
       // This will activate the closest `error.js` Error Boundary
       //throw new Error('Failed to fetch data');
       throw new Error("Failed to fetch data");
     }
-
-    
 
     const obj = await res.json();
     console.log('>>>>>>>>> obj >>>>>>>>>>',obj)
@@ -56,7 +46,8 @@ export default function LastNamePage() {
         <li key={user.id}>
             {"id: "}{user.id}<br />
             {"First Nmae: "}{user.firstName}<br />
-            {"Last Name: "}{user.lastName}<br /><br />
+            {"Last Name: "}{user.lastName}<br />
+            {"Account ID: "}{user.id}<br /><br />
         </li>)
     //console.log('>>>>>>>>> userArray >>>>>>>>>>',userArray)
 
@@ -69,17 +60,27 @@ export default function LastNamePage() {
       <div className=" flex w-1/2 items-center content-center justify-center ">
         <form
           action={getUserByLastName}
-          className="flex flex-col bg-gray-800 max-h-52  p-4 border-4 text-stone-100 gap-4"
+          className="flex flex-col bg-gray-800 max-h-56  p-4 border-4 text-stone-100 gap-4"
         >
             <label> Last Name </label>
             <input
                 className=" bg-gray-700"
                 type="text" name="lastname"  />
+            
+            <label> Fetch URL </label>
+            <input
+                className=" bg-gray-700"
+                type="text" name="urlinput"  />
+            
             <button
-                className="ring ring-offset-2 ring-blue-800 w-24 h-8 bg-gray-700 rounded-md"
+                className="ring ring-offset-2 ring-blue-800 w-24 h-8 text-stone-100 bg-gray-700 rounded-md"
                 type="submit"
+                
           ></button>
+          
+
         </form>
+        
       </div>
       <div className=" bg-black w-1/2 text-green-500 border-double border-8 border-gray-700 pl-6 h-[calc(100vh-96px)] overflow-auto">
       <ul>

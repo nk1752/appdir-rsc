@@ -32,7 +32,7 @@ export default function FirstNamePage() {
     } 
 
     const obj = await res.json();
-    console.log('>>>>>>>>> obj >>>>>>>>>>',obj)
+    //console.log('>>>>>>>>> obj >>>>>>>>>>',obj)
 
     userArray = obj.map((user: User) =>
         <li key={user.id}>
