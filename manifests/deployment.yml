@@ -2,11 +2,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: appdir-deployment
-  namespace: poc
+  namespace: rsc
   labels:
     app: appdir
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: appdir
@@ -18,7 +18,7 @@ spec:
       
       containers:
       - name: appdir
-        image: vhacr2.azurecr.io/appdir:latest
+        image: vhacr1.azurecr.io/appdir:latest
         resources:
           requests:
             memory: "128Mi"

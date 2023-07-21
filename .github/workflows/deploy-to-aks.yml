@@ -90,7 +90,7 @@ jobs:
           --build-arg PLATFORM=${{ env.PLATFORM }} \
           --registry ${{ env.AZURE_CONTAINER_REGISTRY }} \
           -g ${{ env.RESOURCE_GROUP }} \
-          -f ./dockerfiles/Dockerfile.prisma .
+          -f ./dockerfiles/Dockerfile.prod .
           
 
   deploy:
