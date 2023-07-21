@@ -86,7 +86,6 @@ jobs:
         run: |
           az acr build \
           --image ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ env.CONTAINER_TAG }} \
-          --build-arg RUN_NUMBER=${{ github.run_number }} \
           --build-arg PLATFORM=${{ env.PLATFORM }} \
           --registry ${{ env.AZURE_CONTAINER_REGISTRY }} \
           -g ${{ env.RESOURCE_GROUP }} \
