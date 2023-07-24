@@ -51,6 +51,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+
+      - name: github.context
+        run: echo `github context >>> ${{ toJson(github.context) }}`
+      - name: github.event
+        run: echo `github event >>> ${{ toJson(github.event) }}`
+      - name: github.event_name
+        run: echo `github event name >>> ${{ github.event_name }}`
+      - name: github.repository
+        run: echo `github repository >>> ${{ github.repository }}`
+
+
       - name: github.sha
         run: echo `github SHA >>> ${{ github.sha }}`
       - name: github.env
@@ -60,16 +71,15 @@ jobs:
       - name: ${{github.run_id}}
         run: echo `run id >>> ${{github.run_id}}`
 
-  buildImage:
-
+  build_image:
     permissions:
       contents: read
       id-token: write
     runs-on: ubuntu-latest
-    
     needs: [github_variables]
     
     steps:
+
       # Checks out the repository this file is in
       - uses: actions/checkout@v3
 
@@ -92,15 +102,16 @@ jobs:
           -f ./dockerfiles/Dockerfile.prod .
           
 
-  deploy:
-
+  deploy_to_aks:
     permissions:
       actions: read
       contents: read
       id-token: write
     runs-on: ubuntu-latest
-    needs: [buildImage]
+    needs: [build_image]
+
     steps:
+
       # Checks out the repository this file is in
       - uses: actions/checkout@v3
 

@@ -7,7 +7,7 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 # Install dependencies based on the preferred package manager
-COPY package.json package-lock.json ./
+COPY package*.json ./
 RUN npm ci
 
 
@@ -19,7 +19,6 @@ COPY ./ ./
 
 RUN npm run build
 
-
 # Production image, copy all the files and run next
 FROM base AS runner
 WORKDIR /app
@@ -29,12 +28,11 @@ ENV NEXT_TELEMETRY_DISABLED 1
 
 # setup systen group and user
 RUN addgroup --system viva --gid 1001 && adduser --system devops --uid 1001 --ingroup viva
-USER devops
+
 
 # You only need to copy next.config.js if you are NOT using the default configuration
 COPY --from=builder /app/next.config.js ./
 COPY --from=builder /app/public ./public
-
 COPY --from=builder --chown=devops:viva /app/.env.local ./
 COPY --from=builder --chown=devops:viva /app/.env.production.local ./
 
@@ -42,6 +40,8 @@ COPY --from=builder --chown=devops:viva /app/.env.production.local ./
 # https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder --chown=devops:viva /app/.next/standalone ./
 COPY --from=builder --chown=devops:viva /app/.next/static ./.next/static
+
+USER devops
 
 EXPOSE 3000
 
