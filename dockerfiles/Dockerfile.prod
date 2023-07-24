@@ -8,6 +8,8 @@ WORKDIR /app
 
 # Install dependencies based on the preferred package manager
 COPY package*.json ./
+COPY .env ./
+COPY .env.production.local ./
 RUN npm ci
 
 
@@ -33,8 +35,7 @@ RUN addgroup --system viva --gid 1001 && adduser --system devops --uid 1001 --in
 # You only need to copy next.config.js if you are NOT using the default configuration
 COPY --from=builder /app/next.config.js ./
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/.env ./
-COPY --from=builder /app/.env.production.local ./
+
 
 
 # Automatically leverage output traces to reduce image size
@@ -46,7 +47,7 @@ USER devops
 
 EXPOSE 3000
 
-ARG PLATFORM
+ARG PLATFORM=aks
 
 ENV PLATFORM=${PLATFORM}
 
