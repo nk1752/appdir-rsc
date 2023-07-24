@@ -149,7 +149,7 @@ jobs:
           manifests: |
             manifests/deployment.yml
             manifests/service.yml
-            manifests/ingress.yml
+            
         
           images: |
             ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ env.CONTAINER_TAG }}
